@@ -62,7 +62,8 @@ public class HeadsUpDisplay : MonoBehaviour
 		"Capturing Buildings take multiple turns, make sure to select 'Capture' each time.\n\n" +
 		"Heal Tanks by leaving them in friendly buildings.\n" +
 		"(Cities=1hp  Bases=2hp).\n\n\n" +
-		"Play using the Mouse/Mouse Buttons/Mouse Wheel.";
+		"Play using the Mouse/Mouse Buttons/Mouse Wheel.\n" + 
+        "Left/Right/Up/Down Arrows to move camera";
 
 	// Day Change
 	private bool Day_Visible = false;

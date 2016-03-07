@@ -67,6 +67,9 @@ public class Unit : MonoBehaviour
 		if (Game.Level != null)
 			Game.Level.GetTile(TilePosition()).OnUnitEnter(this);
 	}
+    /// <summary>
+    /// Unit has died. Remove from Scene.
+    /// </summary>
 	public void Remove()
 	{
 		Game.Level.GetTile(TilePosition()).OnUnitLeave();
