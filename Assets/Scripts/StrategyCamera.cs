@@ -22,15 +22,15 @@ public class StrategyCamera : MonoBehaviour
 			return;
 
 		// Left / Right
-		if (Input.mousePosition.x < scrollDistance) 
+        if (Input.GetKey(KeyCode.LeftArrow))
 			transform.Translate(Vector3.right * -scrollSpeed * Time.deltaTime); 
-		else if (Input.mousePosition.x >= Screen.width - scrollDistance) 
+        else if (Input.GetKey(KeyCode.RightArrow))
 			transform.Translate(Vector3.right * scrollSpeed * Time.deltaTime); 
 
 		// Forward / Backward
-		if (Input.mousePosition.y < scrollDistance) 
+		if (Input.GetKey(KeyCode.DownArrow)) 
 			transform.Translate((Vector3.forward - transform.forward) * -scrollSpeed * Time.deltaTime); 
-		else if (Input.mousePosition.y >= Screen.height - scrollDistance) 
+		else if (Input.GetKey(KeyCode.UpArrow)) 
 			transform.Translate((Vector3.forward - transform.forward) * scrollSpeed * Time.deltaTime);
 
 		// Zooming
