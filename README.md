@@ -5,7 +5,7 @@ An open source 3D Advance Wars game made with [Unity](http://unity3d.com/).
 ![](http://i.imgur.com/xqMIZAY.png)
 
 ### Credits
-Created by Corey Zeke Womack (Torrunt) - [me@torrunt.net](mailto:me@torrunt.net) - [torrunt.net](http://torrunt.net)
+[https://github.com/Torrunt/OpenAW3D]Base created by Corey Zeke Womack (Torrunt) - [me@torrunt.net](mailto:me@torrunt.net) - [torrunt.net](http://torrunt.net)
 
 Advance Wars © Nintendo and Intelligent Systems
 
