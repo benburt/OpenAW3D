@@ -215,7 +215,20 @@ public class Unit : MonoBehaviour
 		else
 			HitPoints += amount;
 	}
-	public int GetHitPoints() { return Mathf.RoundToInt(HitPoints); }
+
+    public void Heal()
+    {
+        if(HitPoints + BuildingOn.BuildingType.HealingPower > 10)
+        {
+            HitPoints = 10;
+        }
+        else
+        {
+            HitPoints += BuildingOn.BuildingType.HealingPower;
+        }
+    }
+
+    public int GetHitPoints() { return Mathf.RoundToInt(HitPoints); }
 
 	// Actions
 

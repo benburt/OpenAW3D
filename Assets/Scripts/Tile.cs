@@ -60,7 +60,7 @@ public class Tile : MonoBehaviour
 	public void Select()
 	{
 		if (BuildingOnTop)
-			Game.HUD.SetTileInfo(BuildingOnTop.GetTypeName(), BuildingOnTop.Team, BuildingOnTop.GetHitPoints());
+			Game.HUD.SetTileInfo(BuildingOnTop.BuildingType.Name, BuildingOnTop.Team, BuildingOnTop.HitPoints);
 		else
 			Game.HUD.SetTileInfo(GetTypeName());
 

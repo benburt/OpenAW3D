@@ -13,6 +13,7 @@ public class BuyMenu : Menu
 	private int[] prices = new int[]
 	{
 		6000 /// 7000 in the actual game
+        , 8000
 	};
 
 	protected override void Init()
@@ -32,14 +33,15 @@ public class BuyMenu : Menu
 
 		ClearItems();
 
-		AddItem("Tank", Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
-	}
+        AddItem("Tank", Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
+        AddItem("Tank", Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
+    }
 
 	public override void Show(bool middleOfScreen, Vector3 position)
 	{
 		for (int i = 0; i < prices.Length; i++)
 		{
-			if (Game.GetCurrentTeam().Resources < prices[i])
+            if (Game.GetCurrentTeam().Resources < prices[i])
 			{
 				ButtonStyle.normal.textColor = Color.grey;
 				IconColors[i] = new Color(1, 1, 1, 0.4f);

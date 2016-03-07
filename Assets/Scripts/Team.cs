@@ -1,13 +1,24 @@
+using Assets.Scripts.Buildings;
 using System.Collections.Generic;
 
 public class Team
 {
 	public int TeamNo = -1;
-
+    /// <summary>
+    /// The amount of "Cash" the team has
+    /// </summary>
 	public int Resources = 8000;
+    /// <summary>
+    /// Units that belong to the team
+    /// </summary>
 	public List<Unit> Units = new List<Unit>();
+    /// <summary>
+    /// Buildings this team has captured
+    /// </summary>
 	public List<Building> Buildings = new List<Building>();
-
+    /// <summary>
+    /// How much each building brings in each round
+    /// </summary>
 	private const int INCOME_PER_BUILDING = 3000;
 
 	public void GainIncome()
@@ -33,10 +44,7 @@ public class Team
 		{
 			if (Units[i].GetHitPoints() != 10 && Units[i].BuildingOn != null && Units[i].BuildingOn.Team == Units[i].Team)
 			{
-				if (Units[i].BuildingOn.Type == Building.CITY)
-					Units[i].Heal(1);
-				else if (Units[i].BuildingOn.Type == Building.BASE)
-					Units[i].Heal(2);
+                Units[i].Heal();
 			}
 		}
 	}
@@ -44,7 +52,7 @@ public class Team
 	{
 		for (int i = 0; i < Buildings.Count; i++)
 		{
-			if (Buildings[i].GetHitPoints() < Buildings[i].GetHitPointsMax() && (Buildings[i].UnitOnTop == null || Buildings[i].UnitOnTop.Team == TeamNo))
+			if (Buildings[i].HitPoints < Buildings[i].GetHitPointsMax() && (Buildings[i].UnitOnTop == null || Buildings[i].UnitOnTop.Team == TeamNo))
 				Buildings[i].Heal(2);
 		}
 	}

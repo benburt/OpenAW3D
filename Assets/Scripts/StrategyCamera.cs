@@ -6,7 +6,7 @@ public class StrategyCamera : MonoBehaviour
 
 	private Game Game;
 
-	private int scrollDistance = 2; 
+	//private int scrollDistance = 2; 
 	private float scrollSpeed = 10;
 
 	// Use this for initialization
