@@ -272,9 +272,9 @@ public class Unit : MonoBehaviour
 		if (Sound_Fire != null)
 			GetComponent<AudioSource>().PlayOneShot(Sound_Fire);
 
-		// Damage Enemy
+		// Damage Enemy (50% Own HP)
 		CurrentAttackTarget.Damage(GetHitPoints() * 0.5f);
-		// Take Damage
+		// Take Damage  (20% Targets HP)
 		Damage(CurrentAttackTarget.GetHitPoints() * 0.2f);
 
 		CurrentAttackTarget = null;

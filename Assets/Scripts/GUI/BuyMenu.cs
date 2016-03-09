@@ -1,3 +1,4 @@
+using Assets.Scripts.GUI;
 using UnityEngine;
 
 public class BuyMenu : Menu
@@ -33,8 +34,11 @@ public class BuyMenu : Menu
 
 		ClearItems();
 
+        //TODO: Refactor to a BuyMenuItem class
+        BuyMenuItem bmi = new BuyMenuItem("Tank", 6000, Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
+
         AddItem("Tank", Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
-        AddItem("Tank", Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
+        AddItem("Tank2", Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
     }
 
 	public override void Show(bool middleOfScreen, Vector3 position)
@@ -74,6 +78,8 @@ public class BuyMenu : Menu
 		if (Building == null)
 			return;
 
+        Debug.Log("Item: " + item);
+
 		switch (item)
 		{
 		case "Tank":
@@ -96,4 +102,13 @@ public class BuyMenu : Menu
 
 		Hide();
 	}
+
+    /// <summary>
+    /// Adds a new Item to the list of possible purchases
+    /// </summary>
+    /// <param name="NewItem">The item to add</param>
+    public void AddItem(BuyMenuItem NewItem)
+    {
+
+    }
 }

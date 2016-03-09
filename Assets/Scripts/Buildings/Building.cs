@@ -58,7 +58,7 @@ public class Building : MonoBehaviour
 			return;
 		
 		Game.Selector.SelectTile(TilePosition());
-
+        
 		Game.HUD.SetTileInfo(BuildingType.Name, Team, HitPoints);
 	}
 
