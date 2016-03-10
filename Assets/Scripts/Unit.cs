@@ -433,10 +433,12 @@ public class Unit : MonoBehaviour
 				int x = pos.x;
 				int y = pos.y;
 
-				if (!Game.Level.GetTile(x, y).CanWalkOn())
+                Tile tile = Game.Level.GetTile(x, y);
+
+				if (!tile.CanWalkOn())
 					continue;
 
-				int passHere = Game.Level.GetTile(x, y).DistanceSteps;
+				int passHere = tile.DistanceSteps;
 
 				foreach (Point movePos in ValidMoves(x, y))
 				{
@@ -541,8 +543,13 @@ public class Unit : MonoBehaviour
 			if (!InRange(pos))
 				continue;
 
-			if (Game.Level.ValidTile(pos) && Game.Level.GetTile(pos).CanWalkOn())
-				Game.Level.GetTile(pos).TintAsInRange();
+            if (Game.Level.ValidTile(pos))
+            {
+                Tile tile = Game.Level.GetTile(pos);
+                
+                if(tile.CanWalkOn())
+                    tile.TintAsInRange();
+            }
 		}
 	}
 

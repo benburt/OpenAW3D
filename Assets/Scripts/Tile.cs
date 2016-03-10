@@ -21,12 +21,12 @@ public class Tile : MonoBehaviour
 	public const int WATER 	= 3;
 	public const int RAMP 	= 4;
 	public const int BRIDGE	= 5;
-
+    
 	// Use this for initialization
 	void Start ()
 	{
 		Game = GameObject.Find("Game").GetComponent<Game>();
-	}
+    }
 
 	void OnMouseDown()
 	{

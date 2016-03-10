@@ -142,7 +142,7 @@ public class UnitSelector : MonoBehaviour
 	// Selecting Tiles
 	public void SelectTile(Transform tile)
 	{
-		UnselectCurrentTile();
+		UnselectTile(CurrentTile);
 		CurrentTile = tile;
 
 		tile.gameObject.GetComponent<Tile>().Select();
@@ -160,15 +160,13 @@ public class UnitSelector : MonoBehaviour
 
 	private void UnselectTile(Transform tile)
 	{
+        if (tile == null)
+            return;
+
 		tile.gameObject.GetComponent<Tile>().UnTint();
 
 		CurrentTile = null;
 	}
-	public void UnselectCurrentTile()
-	{
-		if (CurrentTile == null)
-			return;
-		UnselectTile(CurrentTile);
-	}
+
 
 }
