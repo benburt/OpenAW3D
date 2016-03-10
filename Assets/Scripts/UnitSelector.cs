@@ -146,9 +146,7 @@ public class UnitSelector : MonoBehaviour
 		CurrentTile = tile;
 
 		tile.gameObject.GetComponent<Tile>().Select();
-
-
-
+        
 		transform.position = new Vector3(tile.transform.position.x, tile.transform.position.y + 1, tile.transform.position.z);
 
 		// Update Unit Path

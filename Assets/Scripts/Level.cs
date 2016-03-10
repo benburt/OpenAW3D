@@ -90,16 +90,32 @@ public class Level : MonoBehaviour
             Debug.Log("X: " + tilePosition.x + "Y: " + tilePosition.y);
         }
 
-        //return Tiles[tilePosition.y][tilePosition.x];
         return null;
     }
 
-	public Tile GetTile(int x, int y) { return Tiles[y][x]; }
+	public Tile GetTile(int x, int y)
+    {
+        return Tiles[y][x];
+    }
 	
-	public bool ValidTile(int x, int y) { return x >= 0 && y >= 0 && x <= Bounds.width && y <= Bounds.height; }
-	public bool ValidTile(Point tilePosition) { return ValidTile(tilePosition.x, tilePosition.y); }
+	public bool ValidTile(int x, int y)
+    {
+        // Why not just check tilerow and column is not null? 
+        // Wouldn't that be more flexible?
+        TileRow tr = Tiles[y];
+        if (tr == null)
+            return false;
+        else if (tr[x] == null)
+            return false;
+        else
+            return true;
+    }
 
-
+	public bool ValidTile(Point tilePosition)
+    {
+        return ValidTile(tilePosition.x, tilePosition.y);
+    }
+    
 	public IEnumerable<Point> AllTilePositions()
 	{
         foreach(TileRow tr in Tiles.TileRows)

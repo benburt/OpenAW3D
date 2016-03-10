@@ -244,9 +244,7 @@ public class Unit : MonoBehaviour
 			CurrentAttackTarget = UnitsInAttackRange[0];
 		else
 			CurrentAttackTarget = unit;
-
-		//print(CurrentAttackTarget);
-
+        
 		WaitingForActionAccept = true;
 
 		Game.HUD.ShowCrosshair(new Vector3(CurrentAttackTarget.transform.position.x, CurrentAttackTarget.GetPosY(), CurrentAttackTarget.transform.position.z));
@@ -409,7 +407,7 @@ public class Unit : MonoBehaviour
 			return false;
 		}
 
-		if (!Game.Level.ValidTile(posX, posY) || !Game.Level.GetTile(posX, posY).CanWalkOn() || !InRange(new Point(posX, posY)))
+		if (!Game.Level.ValidTile(posX, posY) || (Game.Level.GetTile(posX, posY) != null && !Game.Level.GetTile(posX, posY).CanWalkOn()) || !InRange(new Point(posX, posY)))
 			return false;
 
 		Waypoints.Clear();
@@ -548,6 +546,8 @@ public class Unit : MonoBehaviour
 		}
 	}
 
+    //TODO: Re-write to use a more flexible and accurate algorithim.
+    // This currently counts tiles over none movable tiles as reachable.
 	public bool InRange(Point pos)
 	{
 		Point unitPos = TilePosition();
@@ -555,7 +555,9 @@ public class Unit : MonoBehaviour
 		return square_dist <= Mathf.Pow(Range + 0.99f, 2);
 	}
 
-	public bool InAttackRange(Point pos)
+    //TODO: Re-write to use a more flexible and accurate algorithim.
+    // This currently allows diagonal attacks which is WRONG.
+    public bool InAttackRange(Point pos)
 	{
 		Point unitPos = TilePosition();
 		double square_dist = Mathf.Pow(pos.x - unitPos.x, 2) + Mathf.Pow(pos.y - unitPos.y, 2);

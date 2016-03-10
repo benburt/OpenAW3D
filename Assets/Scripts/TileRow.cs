@@ -23,7 +23,12 @@ namespace Assets.Scripts
             get
             {
                 if (index < Columns.Count)
-                    return Columns[index];
+                {
+                    if (Columns.ContainsKey(index))
+                        return Columns[index];
+                    else
+                        return null;
+                }
                 else
                     throw new IndexOutOfRangeException();
             }

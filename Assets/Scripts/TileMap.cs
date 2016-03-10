@@ -14,9 +14,9 @@ namespace Assets.Scripts
             get
             {
                 if (index < TileRows.Count)
-                    return TileRows.Where(i => i.Index == index).First();
+                    return TileRows.Where(i => i.Index == index).FirstOrDefault();
                 else
-                    throw new IndexOutOfRangeException();
+                    return null;
             }
         }
 
