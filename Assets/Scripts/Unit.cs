@@ -48,8 +48,10 @@ public class Unit : MonoBehaviour
 	// Sound
 	public AudioClip Sound_Fire;
 
-	// Use this for initialization
-	void Start ()
+    IEnumerable<Point> AllTilePositions;
+
+    // Use this for initialization
+    void Start ()
 	{
 		Init();
 	}
@@ -59,13 +61,16 @@ public class Unit : MonoBehaviour
 			return;
 
 		Game = GameObject.Find("Game").GetComponent<Game>();
-		
-		PosY = transform.position.y;
+                    
+        PosY = transform.position.y;
 		
 		SetTeam(Team, true);
 
-		if (Game.Level != null)
-			Game.Level.GetTile(TilePosition()).OnUnitEnter(this);
+        if (Game.Level != null)
+        {
+            Game.Level.GetTile(TilePosition()).OnUnitEnter(this);
+            AllTilePositions = Game.Level.AllTilePositions();
+        }
 	}
     /// <summary>
     /// Unit has died. Remove from Scene.
@@ -81,8 +86,11 @@ public class Unit : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		// Waypoints
-		if (Waypoints.Count != 0)
+        if(AllTilePositions == null)
+            AllTilePositions = Game.Level.AllTilePositions();
+
+        // Waypoints
+        if (Waypoints.Count != 0)
 		{
 			transform.position = Vector3.MoveTowards(transform.position, Waypoints[0], Speed * Time.deltaTime);
 			transform.LookAt(Waypoints[0]);
@@ -159,7 +167,7 @@ public class Unit : MonoBehaviour
 	public void Unselect()
 	{
 		Selected = false;
-		foreach (Point pos in Game.Level.AllTilePositions())
+		foreach (Point pos in AllTilePositions)
 		{
 			if (!IsMoving())
 				Game.Level.GetTile(pos).ClearPathFindingInfo();
@@ -402,7 +410,7 @@ public class Unit : MonoBehaviour
 
 		if (Mathf.RoundToInt(transform.position.x) == posX && Mathf.RoundToInt(transform.position.z) == posY)
 		{
-			foreach (Point pos in Game.Level.AllTilePositions())
+			foreach (Point pos in AllTilePositions)
 				Game.Level.GetTile(pos).ClearPathFindingInfo();
 			return false;
 		}
@@ -416,9 +424,8 @@ public class Unit : MonoBehaviour
 			Unselect();
 			Selected = true;
 		}
-
-		
-		foreach (Point pos in Game.Level.AllTilePositions())
+        
+		foreach (Point pos in AllTilePositions)
 			Game.Level.GetTile(pos).ClearPathFindingInfo();
 
 		Game.Level.GetTile(posX, posY).DistanceSteps = 0;
@@ -428,7 +435,7 @@ public class Unit : MonoBehaviour
 		{
 			bool madeProgress = false;
 
-			foreach (Point pos in Game.Level.AllTilePositions())
+			foreach (Point pos in AllTilePositions)
 			{
 				int x = pos.x;
 				int y = pos.y;
@@ -498,7 +505,7 @@ public class Unit : MonoBehaviour
 
 		if (setWaypoints)
 		{
-			foreach (Point pos in Game.Level.AllTilePositions())
+			foreach (Point pos in AllTilePositions)
 				Game.Level.GetTile(pos).InRange = false;
 		}
 		else
