@@ -1,4 +1,5 @@
 using Assets.Scripts.GUI;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BuyMenu : Menu
@@ -11,12 +12,11 @@ public class BuyMenu : Menu
 	private Rect Price_Rect;
 	private GUIStyle Price_Style;
 
-	private int[] prices = new int[]
-	{
-		6000 /// 7000 in the actual game
-        , 8000
-	};
-
+    /// <summary>
+    /// List of Items for sale
+    /// </summary>
+    protected new List<BuyMenuItem> Items { get; set; }
+    
 	protected override void Init()
 	{
 		base.Init();
@@ -28,24 +28,43 @@ public class BuyMenu : Menu
 		Price_Style.contentOffset = new Vector2(-2, 0);
 	}
 
-	public void SetBuilding(Building building)
+    protected override void OnGUI()
+    {
+        if (!Visible)
+            return;
+
+        // Back
+        GUI.Box(Rect, GUIContent.none, Style);
+
+        // Red/Blue Strips
+        GUI.Box(TopStripe_Rect, GUIContent.none, TopStripe_Style);
+        GUI.Box(BottomStripe_Rect, GUIContent.none, BottomStripe_Style);
+
+        // Buttons
+        Button_Rect.y = Rect.y + 4;
+        for (int i = 0; i < Items.Count; i++)
+        {
+            DrawButton(i);
+        }
+    }
+
+    public void SetBuilding(Building building)
 	{
 		Building = building; 
 
 		ClearItems();
-
-        //TODO: Refactor to a BuyMenuItem class
+        
         BuyMenuItem bmi = new BuyMenuItem("Tank", 6000, Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
+        AddItem(bmi);
+        bmi = new BuyMenuItem("Mega Tank", 8000, Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
+        AddItem(bmi);
+    }   
 
-        AddItem("Tank", Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
-        AddItem("Tank2", Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
-    }
-
-	public override void Show(bool middleOfScreen, Vector3 position)
+	public override void Show(bool middleOfScreen, Vector3 position, int? ItemCount = null)
 	{
-		for (int i = 0; i < prices.Length; i++)
+		for (int i = 0; i < Items.Count; i++)
 		{
-            if (Game.GetCurrentTeam().Resources < prices[i])
+            if (Game.GetCurrentTeam().Resources < Items[i].Price)
 			{
 				ButtonStyle.normal.textColor = Color.grey;
 				IconColors[i] = new Color(1, 1, 1, 0.4f);
@@ -58,7 +77,7 @@ public class BuyMenu : Menu
 		}
 		Price_Style.normal.textColor = ButtonStyle.normal.textColor;
 
-		base.Show(middleOfScreen, position);
+		base.Show(middleOfScreen, position, Items.Count);
 
 		Price_Rect = new Rect();
 		Price_Rect.height = ButtonHeight;
@@ -68,47 +87,60 @@ public class BuyMenu : Menu
 	protected override void DrawButton(int i)
 	{
 		Price_Rect.y = Button_Rect.y + 5;
-		GUI.TextArea(Price_Rect, prices[i].ToString(), Price_Style);
+		GUI.TextArea(Price_Rect, Items[i].Price.ToString(), Price_Style);
+        base.DrawButtonIcon(i);
 
-		base.DrawButton(i);
-	}
+        // button
+        bool clicked = GUI.Button(Button_Rect, new GUIContent(Items[i].Name), ButtonStyle);
 
-	protected override void OnButtonPress(string item)
-	{
-		if (Building == null)
-			return;
+        // click event
+        if (clicked)
+            OnButtonPress(Items[i]);
 
-        Debug.Log("Item: " + item);
-
-		switch (item)
-		{
-		case "Tank":
-			if (Game.GetCurrentTeam().Resources < prices[0])
-				break;
-			Game.GetCurrentTeam().Resources -= prices[0];
-			Game.HUD.SetResources(Game.GetCurrentTeam().Resources);
-			
-			Transform unitObject = Instantiate(Game.Unit_Tank, Building.transform.position, Quaternion.identity) as Transform;
-			unitObject.parent = GameObject.Find("Units").transform;
-			Unit unit = unitObject.GetComponent<Unit>();
-			unit.Init();
-			unit.SetTeam(Building.Team);
-			unit.AcceptMove();
-			
-			break;
-		}
-
-		Game.Selector.UnselectCurrentBuilding();
-
-		Hide();
-	}
+        Button_Rect.y += ButtonHeight;
+    }
 
     /// <summary>
     /// Adds a new Item to the list of possible purchases
     /// </summary>
     /// <param name="NewItem">The item to add</param>
-    public void AddItem(BuyMenuItem NewItem)
+    private void AddItem(BuyMenuItem item)
     {
+        if (this.Items == null)
+            this.Items = new List<BuyMenuItem>();
 
+        this.Items.Add(item);
+        Icons.Add(item.Icon);
+        IconColors.Add(default(Color));
     }
+
+    /// <summary>
+    /// Fired when an item is "bought"
+    /// </summary>
+    /// <param name="item">The selected item</param>
+    protected void OnButtonPress(BuyMenuItem item)
+	{
+		if (Building == null)
+			return;
+        
+        // Make sure team has enough cash.
+        if(Game.GetCurrentTeam().Resources >= item.Price)
+        {
+            // Update team cash.
+            Game.GetCurrentTeam().Resources -= item.Price;
+            Game.HUD.SetResources(Game.GetCurrentTeam().Resources);
+
+            // TODO: Refactor away from Hardcoded Game.Unit_Tank...
+            Transform unitObject = Instantiate(Game.Unit_Tank, Building.transform.position, Quaternion.identity) as Transform;
+            unitObject.parent = GameObject.Find("Units").transform;
+            Unit unit = unitObject.GetComponent<Unit>();
+            unit.Init();
+            unit.SetTeam(Building.Team);
+            unit.AcceptMove();
+        }
+
+		Game.Selector.UnselectCurrentBuilding();
+
+		Hide();
+	}
 }

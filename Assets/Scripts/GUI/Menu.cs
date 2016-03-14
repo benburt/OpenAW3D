@@ -108,20 +108,35 @@ public class Menu : MonoBehaviour
 			DrawButton(i);
 		}
 	}
+
+    /// <summary>
+    /// Handles the drawing of a button Icon
+    /// </summary>
+    /// <param name="i">The index of the icon to draw</param>
+    protected virtual void DrawButtonIcon(int i)
+    {
+        if (Icons[i] != null)
+        {
+            if (IconColors[i] != default(Color))
+                GUI.color = IconColors[i];
+
+            GUI.DrawTexture(new Rect(Rect.x + 4, Button_Rect.y, IconSize, IconSize), Icons[i]);
+
+            if (IconColors[i] != default(Color))
+                GUI.color = new Color(1, 1, 1, 1);
+        }
+    }
+
+    protected virtual void DrawButtonSeperator()
+    {
+        Seperator_Rect.y = Button_Rect.y;
+        GUI.Box(Seperator_Rect, GUIContent.none, Seperator_Style);
+    }
+
 	protected virtual void DrawButton(int i)
 	{
-		// icon
-		if (Icons[i] != null)
-		{
-			if (IconColors[i] != default(Color))
-				GUI.color = IconColors[i];
-			
-			GUI.DrawTexture(new Rect(Rect.x + 4, Button_Rect.y, IconSize, IconSize), Icons[i]);
-			
-			if (IconColors[i] != default(Color))
-				GUI.color = new Color(1, 1, 1, 1);
-		}
-		
+        DrawButtonIcon(i);
+
 		// button
 		bool clicked = GUI.Button(Button_Rect, new GUIContent(Items[i]), ButtonStyle);
 		
@@ -130,12 +145,9 @@ public class Menu : MonoBehaviour
 			OnButtonPress(Items[i]);
 		
 		Button_Rect.y += ButtonHeight;
-		
-		if (SeperatorBetweenButtons && i < Items.Count-1)
-		{
-			Seperator_Rect.y = Button_Rect.y;
-			GUI.Box(Seperator_Rect, GUIContent.none, Seperator_Style);
-		}
+
+        if (SeperatorBetweenButtons && i < Items.Count - 1)
+            DrawButtonSeperator();
 	}
 
 
@@ -143,9 +155,13 @@ public class Menu : MonoBehaviour
 	{
 	}
 
-	public virtual void Show(bool middleOfScreen = true, Vector3 position = default(Vector3))
+	public virtual void Show(bool middleOfScreen = true, Vector3 position = default(Vector3), int? ItemCount = null)
 	{
+
 		int BoxHeight = (ButtonHeight * Items.Count) + 8;
+
+        if (ItemCount.HasValue)
+            BoxHeight = (ButtonHeight * ItemCount.Value) + 8;
 
 		Vector3 pos;
 		if (!middleOfScreen)
@@ -173,7 +189,7 @@ public class Menu : MonoBehaviour
 		Button_Rect = new Rect(Rect);
 		Button_Rect.x += 4;
 		Button_Rect.height = ButtonHeight;
-
+        
 		Visible = true;
 
 		if (Game != null)

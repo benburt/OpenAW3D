@@ -14,9 +14,7 @@ public class Level : MonoBehaviour
 		Transform TileObjects = this.gameObject.transform.FindChild("Tiles");
 
         GetMapDimensions(TileObjects);
-        // 18 ROWS in SCENE 01
-        // 17 COLUMNS in SCENE 01 (0-16)... -1 to 15... Problem is "16" isn't there...
-
+        
         Tiles = new TileMap();
 
         // Z = ROW
