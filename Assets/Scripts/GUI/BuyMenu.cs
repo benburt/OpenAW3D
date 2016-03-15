@@ -58,6 +58,8 @@ public class BuyMenu : Menu
         AddItem(bmi);
         bmi = new BuyMenuItem("Mega Tank", 8000, Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
         AddItem(bmi);
+
+        Debug.Log("Items in list: " + Items.Count);
     }   
 
 	public override void Show(bool middleOfScreen, Vector3 position, int? ItemCount = null)
@@ -143,4 +145,11 @@ public class BuyMenu : Menu
 
 		Hide();
 	}
+
+    protected new void ClearItems()
+    {
+        if(Items != null)
+           Items.Clear();
+        base.ClearItems();
+    }
 }
