@@ -5,7 +5,7 @@ using UnityEngine;
 public class BuyMenu : Menu
 {
 	public Texture2D Icon_Red_Tank;
-	public Texture2D Icon_Blue_Tank;
+	private Texture2D Icon_Blue_Tank;
 
 	private Building Building;
 
@@ -22,6 +22,11 @@ public class BuyMenu : Menu
 		base.Init();
 
 		BoxWidth = 200;
+
+        // Load the BlueTank Texture.
+        Icon_Blue_Tank = Resources.Load("blue_tank") as Texture2D;
+
+        Debug.Log("INIT!!");
 
 		Price_Style = new GUIStyle(ButtonStyle);
 		Price_Style.alignment = TextAnchor.UpperRight;
@@ -58,8 +63,6 @@ public class BuyMenu : Menu
         AddItem(bmi);
         bmi = new BuyMenuItem("Mega Tank", 8000, Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
         AddItem(bmi);
-
-        Debug.Log("Items in list: " + Items.Count);
     }   
 
 	public override void Show(bool middleOfScreen, Vector3 position, int? ItemCount = null)
