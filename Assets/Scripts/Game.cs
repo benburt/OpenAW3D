@@ -15,9 +15,7 @@ public class Game : MonoBehaviour
 	public List<Team> Teams = new List<Team>{new Team("red"), new Team("blue")};
 
 	public int Day = 1;
-
-	public Transform Unit_Tank;
-
+    
 	public Transform Effect_Explosion;
 	public Transform Arrow_Line;
 	public Transform Arrow_Corner;
