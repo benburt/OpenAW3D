@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class TeamColour : MonoBehaviour
 {
-
 	public Material MaterialNormal;
 	public Material MaterialRed;
 	public Material MaterialBlue;
 
 	public Shader ShaderNormal;
 	public Shader ShaderAlpha;
-
+    
 	public void SetTeam(int team, Color colorOffset = default(Color), float colorMultiplier = 1)
 	{
 		if ((team == 1 && MaterialRed == null) || (team == 1 && MaterialBlue == null) || (team != 1 && team != 2 && MaterialNormal == null))

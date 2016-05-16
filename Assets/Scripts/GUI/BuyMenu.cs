@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class BuyMenu : Menu
 {
-	public Texture2D Icon_Red_Tank;
-	private Texture2D Icon_Blue_Tank;
+    public Texture2D Icon_Tank;
 
 	private Building Building;
 
@@ -22,12 +21,7 @@ public class BuyMenu : Menu
 		base.Init();
 
 		BoxWidth = 200;
-
-        // Load the BlueTank Texture.
-        Icon_Blue_Tank = Resources.Load("blue_tank") as Texture2D;
-
-        Debug.Log("INIT!!");
-
+        
 		Price_Style = new GUIStyle(ButtonStyle);
 		Price_Style.alignment = TextAnchor.UpperRight;
 		Price_Style.contentOffset = new Vector2(-2, 0);
@@ -59,11 +53,16 @@ public class BuyMenu : Menu
 
 		ClearItems();
         
-        BuyMenuItem bmi = new BuyMenuItem("Tank", 6000, Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
+        // Load the TankIcon for the current Team
+        Icon_Tank = Resources.Load(Game.GetCurrentTeam().TeamColorName + "_tank") as Texture2D;
+
+        // Is this list ever going to change?
+        // Is is going to matter *which* team it is? Units for purchase will always be the same...
+        BuyMenuItem bmi = new BuyMenuItem("Tank", 6000, Icon_Tank);
         AddItem(bmi);
-        bmi = new BuyMenuItem("Mega Tank", 8000, Building.Team == 2 ? Icon_Blue_Tank : Icon_Red_Tank);
+        bmi = new BuyMenuItem("Mega Tank", 8000, Icon_Tank);
         AddItem(bmi);
-    }   
+    }
 
 	public override void Show(bool middleOfScreen, Vector3 position, int? ItemCount = null)
 	{
@@ -89,11 +88,22 @@ public class BuyMenu : Menu
 		Price_Rect.x = Rect.x + Rect.width - 2;
 	}
 
-	protected override void DrawButton(int i)
+    protected override void DrawButtonIcon(int i)
+    {
+        if (IconColors[i] != default(Color))
+            GUI.color = IconColors[i];
+
+        GUI.DrawTexture(new Rect(Rect.x + 4, Button_Rect.y, IconSize, IconSize), Items[i].Icon);
+
+        if (IconColors[i] != default(Color))
+            GUI.color = new Color(1, 1, 1, 1);
+    }
+
+    protected override void DrawButton(int i)
 	{
 		Price_Rect.y = Button_Rect.y + 5;
 		GUI.TextArea(Price_Rect, Items[i].Price.ToString(), Price_Style);
-        base.DrawButtonIcon(i);
+        DrawButtonIcon(i);
 
         // button
         bool clicked = GUI.Button(Button_Rect, new GUIContent(Items[i].Name), ButtonStyle);
@@ -135,8 +145,7 @@ public class BuyMenu : Menu
             Game.GetCurrentTeam().Resources -= item.Price;
             Game.HUD.SetResources(Game.GetCurrentTeam().Resources);
 
-            // TODO: Refactor away from Hardcoded Game.Unit_Tank...
-            Transform unitObject = Instantiate(Game.Unit_Tank, Building.transform.position, Quaternion.identity) as Transform;
+            Transform unitObject = Instantiate(Resources.Load<Transform>("prefabs/tank"), Building.transform.position, Quaternion.identity) as Transform;
             unitObject.parent = GameObject.Find("Units").transform;
             Unit unit = unitObject.GetComponent<Unit>();
             unit.Init();

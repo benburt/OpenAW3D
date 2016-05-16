@@ -149,11 +149,8 @@ public class Menu : MonoBehaviour
         if (SeperatorBetweenButtons && i < Items.Count - 1)
             DrawButtonSeperator();
 	}
-
-
-	protected virtual void OnButtonPress(string item)
-	{
-	}
+    
+    protected virtual void OnButtonPress(string item) { }
 
 	public virtual void Show(bool middleOfScreen = true, Vector3 position = default(Vector3), int? ItemCount = null)
 	{

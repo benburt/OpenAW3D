@@ -1,4 +1,3 @@
-using Assets.Scripts.Buildings;
 using System.Collections.Generic;
 
 public class Team
@@ -16,14 +15,17 @@ public class Team
     /// Buildings this team has captured
     /// </summary>
 	public List<Building> Buildings = new List<Building>();
-    /// <summary>
-    /// How much each building brings in each round
-    /// </summary>
-	private const int INCOME_PER_BUILDING = 3000;
 
+    public string TeamColorName { get; set; }
+
+    public Team(string TeamColor)
+    {
+        TeamColorName = TeamColor;
+    }
+    
 	public void GainIncome()
 	{
-		Resources += INCOME_PER_BUILDING * Buildings.Count;
+		Resources += Game.INCOME_PER_BUILDING * Buildings.Count;
 	}
 
 	public void ResetUnits()
@@ -48,6 +50,10 @@ public class Team
 			}
 		}
 	}
+
+    /// <summary>
+    /// "Heals" buildings are not being captured
+    /// </summary>
 	public void HealUncontestedBuildings()
 	{
 		for (int i = 0; i < Buildings.Count; i++)
