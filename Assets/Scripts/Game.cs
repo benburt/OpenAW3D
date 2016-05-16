@@ -38,21 +38,16 @@ public class Game : MonoBehaviour
 
         Material mat = Resources.Load<Material>("water");
         Material mat2 = Resources.Load<Material>("grass");
-
-        try
-        {
-            GameObject.Find("body").GetComponent<Renderer>().material = mat;
-            GameObject.Find("bracers").GetComponent<Renderer>().material = mat2;
-        }
-        catch (Exception ex)
-        {
-            Debug.LogException(ex);
-        }
-
+        
         Units = GameObject.Find("Units").transform;
 		Buildings = GameObject.Find("Buildings").transform;
 
-		Teams[0].TeamNo = 1;
+        AudioClip ac = Resources.Load<AudioClip>("Audio/Music/01 Jake's Theme");
+
+        Camera.GetComponent<AudioSource>().clip = ac;
+        Camera.GetComponent<AudioSource>().Play();
+
+        Teams[0].TeamNo = 1;
 		Teams[1].TeamNo = 2;
 	}
 	

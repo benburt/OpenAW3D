@@ -144,7 +144,7 @@ public class BuyMenu : Menu
             // Update team cash.
             Game.GetCurrentTeam().Resources -= item.Price;
             Game.HUD.SetResources(Game.GetCurrentTeam().Resources);
-
+            
             Transform unitObject = Instantiate(Resources.Load<Transform>("prefabs/tank"), Building.transform.position, Quaternion.identity) as Transform;
             unitObject.parent = GameObject.Find("Units").transform;
             Unit unit = unitObject.GetComponent<Unit>();
