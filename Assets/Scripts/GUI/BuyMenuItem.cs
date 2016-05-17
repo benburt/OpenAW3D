@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Assets.Scripts.GUI
+﻿namespace Assets.Scripts.GUI
 {
     public class BuyMenuItem
     {
@@ -13,13 +11,13 @@ namespace Assets.Scripts.GUI
         /// </summary>
         public int Price { get; set; }
         
-        public Texture2D Icon { get; set; }
+        public string IconName { get; set; }
 
-        public BuyMenuItem(string Name, int Price, Texture2D Icon)
+        public BuyMenuItem(string Name, int Price, string IconName)
         {
             this.Name = Name;
             this.Price = Price;
-            this.Icon = Icon;
+            this.IconName = "_" + IconName;
         }
 
 

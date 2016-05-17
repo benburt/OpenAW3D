@@ -11,6 +11,8 @@ public class BuyMenu : Menu
 	private Rect Price_Rect;
 	private GUIStyle Price_Style;
 
+    string CurrentTeamColor;
+
     /// <summary>
     /// List of Items for sale
     /// </summary>
@@ -49,22 +51,25 @@ public class BuyMenu : Menu
 
     public void SetBuilding(Building building)
 	{
-		Building = building; 
-
-		ClearItems();
+		Building = building;
         
-        // Load the TankIcon for the current Team
-        Icon_Tank = Resources.Load(Game.GetCurrentTeam().TeamColorName + "_tank") as Texture2D;
+        CurrentTeamColor = Game.GetCurrentTeam().TeamColorName;
 
-        // Is this list ever going to change?
-        // Is is going to matter *which* team it is? Units for purchase will always be the same...
-        BuyMenuItem bmi = new BuyMenuItem("Tank", 6000, Icon_Tank);
-        AddItem(bmi);
-        bmi = new BuyMenuItem("Mega Tank", 8000, Icon_Tank);
-        AddItem(bmi);
+        // Load the TankIcon for the current Team
+        Icon_Tank = Resources.Load(CurrentTeamColor + "_tank") as Texture2D;
+        
+        if (Items == null || Items.Count == 0)
+        {
+            // Only build the Items list once.
+            BuyMenuItem bmi = new BuyMenuItem("Tank", 6000, "Tank");
+            AddItem(bmi);
+            bmi = new BuyMenuItem("Mega Tank", 8000, "Tank");
+            AddItem(bmi);
+        }
+
     }
 
-	public override void Show(bool middleOfScreen, Vector3 position, int? ItemCount = null)
+    public override void Show(bool middleOfScreen, Vector3 position, int? ItemCount = null)
 	{
 		for (int i = 0; i < Items.Count; i++)
 		{
@@ -93,7 +98,9 @@ public class BuyMenu : Menu
         if (IconColors[i] != default(Color))
             GUI.color = IconColors[i];
 
-        GUI.DrawTexture(new Rect(Rect.x + 4, Button_Rect.y, IconSize, IconSize), Items[i].Icon);
+        Texture2D ButtonIcon = Resources.Load<Texture2D>(CurrentTeamColor + Items[i].IconName);
+        
+        GUI.DrawTexture(new Rect(Rect.x + 4, Button_Rect.y, IconSize, IconSize), ButtonIcon);
 
         if (IconColors[i] != default(Color))
             GUI.color = new Color(1, 1, 1, 1);
@@ -125,7 +132,6 @@ public class BuyMenu : Menu
             this.Items = new List<BuyMenuItem>();
 
         this.Items.Add(item);
-        Icons.Add(item.Icon);
         IconColors.Add(default(Color));
     }
 
@@ -157,11 +163,4 @@ public class BuyMenu : Menu
 
 		Hide();
 	}
-
-    protected new void ClearItems()
-    {
-        if(Items != null)
-           Items.Clear();
-        base.ClearItems();
-    }
 }
