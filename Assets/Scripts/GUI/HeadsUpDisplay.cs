@@ -415,4 +415,16 @@ public class HeadsUpDisplay : MonoBehaviour
 			break;
 		}
 	}
+
+    public void SetTileInfo(Tile tile)
+    {
+        // Refactor above function
+        if (tile.BuildingOnTop != null)
+        {
+            TileInfoName = tile.BuildingOnTop.BuildingType.Name;
+        }
+        else
+        {
+        }
+    }
 }

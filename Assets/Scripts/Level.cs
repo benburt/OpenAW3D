@@ -35,8 +35,8 @@ public class Level : MonoBehaviour
 				continue;
 
 			Vector3 pos = TileObjects.GetChild(i).gameObject.transform.position;
-
-            if (Tiles[Mathf.RoundToInt(pos.z)][Mathf.RoundToInt(pos.x)] != null && TileObjects.GetChild(i).gameObject.GetComponent<Tile>().Type != Tile.BRIDGE)
+            // What is this doing with bridge?
+            if (Tiles[Mathf.RoundToInt(pos.z)][Mathf.RoundToInt(pos.x)] != null && TileObjects.GetChild(i).gameObject.GetComponent<Tile>().Type != 5)
                 continue;
 
             Tiles[Mathf.RoundToInt(pos.z)].SetTile(Mathf.RoundToInt(pos.x), TileObjects.GetChild(i).gameObject.GetComponent<Tile>());
@@ -52,6 +52,10 @@ public class Level : MonoBehaviour
 		}
 	}
 
+    /// <summary>
+    /// Dynamically works out the maximum width and height of the map
+    /// </summary>
+    /// <param name="TileObjects"></param>
     void GetMapDimensions(Transform TileObjects)
     {
         for (int i = 0; i < TileObjects.childCount; i++)
@@ -76,7 +80,11 @@ public class Level : MonoBehaviour
 	
 	}
 
-
+    /// <summary>
+    /// Gets the tile at tilePosition
+    /// </summary>
+    /// <param name="tilePosition">The point of the tile we are interested in</param>
+    /// <returns>The tile at tilePosition if it exists, else null</returns>
 	public Tile GetTile(Point tilePosition)
     {
         TileRow tr = Tiles[tilePosition.y];
@@ -95,8 +103,14 @@ public class Level : MonoBehaviour
     {
         return Tiles[y][x];
     }
-	
-	public bool ValidTile(int x, int y)
+
+    /// <summary>
+    /// Checks to see if the tile at given co-ordinates is a valid tile
+    /// </summary>
+    /// <param name="x">The X location of the tile</param>
+    /// <param name="y">The Y location of the tile</param>
+    /// <returns>True if tile is valid. False if tile is invalid</returns>
+    public bool ValidTile(int x, int y)
     {
         // Why not just check tilerow and column is not null? 
         // Wouldn't that be more flexible?

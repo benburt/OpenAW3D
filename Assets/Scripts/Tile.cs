@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using Assets.Scripts.Tiles;
 
 public class Tile : MonoBehaviour
 {
@@ -15,17 +15,20 @@ public class Tile : MonoBehaviour
 	public bool InRange = false;
 
 	public int Type = 0;
-
-	public const int GRASS 	= 1;
-	public const int ROAD 	= 2;
-	public const int WATER 	= 3;
-	public const int RAMP 	= 4;
-	public const int BRIDGE	= 5;
+    public TileType TType;
     
 	// Use this for initialization
 	void Start ()
 	{
 		Game = GameObject.Find("Game").GetComponent<Game>();
+        switch(Type)
+        {
+            case 1: TType = new GrassTile();break;
+            case 2: TType = new RoadTile();break;
+            case 3: TType = new WaterTile(); break;
+            case 4: TType = new RampTile(); break;
+            case 5: TType = new BridgeTile(); break;
+        }
     }
 
 	void OnMouseDown()
@@ -59,10 +62,16 @@ public class Tile : MonoBehaviour
 
 	public void Select()
 	{
-		if (BuildingOnTop)
-			Game.HUD.SetTileInfo(BuildingOnTop.BuildingType.Name, BuildingOnTop.Team, BuildingOnTop.HitPoints);
-		else
-			Game.HUD.SetTileInfo(GetTypeName());
+        if (BuildingOnTop)
+        {
+            Game.HUD.SetTileInfo(BuildingOnTop.BuildingType.Name, BuildingOnTop.Team, BuildingOnTop.HitPoints);
+            Game.HUD.SetTileInfo(this);
+        }
+        else
+        {
+            Game.HUD.SetTileInfo(GetTypeName());
+            Game.HUD.SetTileInfo(this);
+        }
 
 		TintAsSelected();
 	}
@@ -199,19 +208,17 @@ public class Tile : MonoBehaviour
 	}
 	public bool ValidPath() { return CanWalkOn()&& !PartOfCurrentPath; }
 
-	public bool CanWalkOn() { return Type != WATER && Type != RAMP; }
+	public bool CanWalkOn()
+    {
+        // TODO: Get rid of this Function!
+        return TType.IsPassable; 
+    }
 
 	public Point TilePosition() { return new Point(Mathf.RoundToInt(this.gameObject.transform.position.x), Mathf.RoundToInt(this.gameObject.transform.position.z)); }
 
 	public string GetTypeName()
 	{
-		switch (Type)
-		{
-		case GRASS: return "Plain";
-		case ROAD: return "Road";
-		case WATER: case RAMP: return "Sea";
-		case BRIDGE: return "Bridge";
-		}
-		return "";
+        // TODO: Get rid of this function!
+        return TType.TileTypeName;
 	}
 }
