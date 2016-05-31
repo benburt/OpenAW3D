@@ -8,7 +8,7 @@ public class Tile : MonoBehaviour
 
 	public Building BuildingOnTop;
 	private Transform Arrow;
-
+    
 	// Distance from current Unit
 	public int DistanceSteps = 10000;
 	public bool PartOfCurrentPath = false;
@@ -23,11 +23,12 @@ public class Tile : MonoBehaviour
 		Game = GameObject.Find("Game").GetComponent<Game>();
         switch(Type)
         {
-            case 1: TType = new GrassTile();break;
-            case 2: TType = new RoadTile();break;
-            case 3: TType = new WaterTile(); break;
-            case 4: TType = new RampTile(); break;
-            case 5: TType = new BridgeTile(); break;
+            case 0: TType = ScriptableObject.CreateInstance<RoadTile>(); break;
+            case 1: TType = ScriptableObject.CreateInstance<BridgeTile>(); break;
+            case 2: TType = ScriptableObject.CreateInstance<RampTile>(); break;
+            case 3: TType = ScriptableObject.CreateInstance<GrassTile>(); break;
+            case 4: TType = ScriptableObject.CreateInstance<WaterTile>(); break;
+            default: Debug.Log("UNKNOWN TILE TYPE ID: " + Type);break;
         }
     }
 
@@ -69,7 +70,7 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            Game.HUD.SetTileInfo(GetTypeName());
+            Game.HUD.SetTileInfo(TType.TileTypeName);
             Game.HUD.SetTileInfo(this);
         }
 
@@ -215,10 +216,4 @@ public class Tile : MonoBehaviour
     }
 
 	public Point TilePosition() { return new Point(Mathf.RoundToInt(this.gameObject.transform.position.x), Mathf.RoundToInt(this.gameObject.transform.position.z)); }
-
-	public string GetTypeName()
-	{
-        // TODO: Get rid of this function!
-        return TType.TileTypeName;
-	}
 }

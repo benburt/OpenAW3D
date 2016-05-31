@@ -1,11 +1,10 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using System.Collections;
 
 // Creates an instance of a primitive depending on the option selected by the user.
 public class EditorGUILayoutPopup : EditorWindow
 {
-    public static string[] options = new string[] { "Cube", "Sphere", "Plane" };
+    public static string[] options;
     public int index = 0;
     [MenuItem("Examples/Editor GUILayout Popup usage")]
     static void Init()
@@ -13,7 +12,7 @@ public class EditorGUILayoutPopup : EditorWindow
         Object[] ob = Resources.FindObjectsOfTypeAll(typeof(MonoScript));
         
         System.Collections.Generic.List<string> t = new System.Collections.Generic.List<string>();
-        // Get list of 
+        // Get list of TileType scripts
         foreach (MonoScript tt in ob)
         {
             if (tt.GetClass() != null && tt.GetClass().IsSubclassOf(typeof(Assets.Scripts.Tiles.TileType)))

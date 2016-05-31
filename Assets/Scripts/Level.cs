@@ -13,8 +13,11 @@ public class Level : MonoBehaviour
 		// Setup Tile Selection
 		Transform TileObjects = this.gameObject.transform.FindChild("Tiles");
 
-        GetMapDimensions(TileObjects);
-        
+        GetMapDimensions(TileObjects.FindChild("GrassTiles"));
+        GetMapDimensions(TileObjects.FindChild("RoadTiles"));
+        GetMapDimensions(TileObjects.FindChild("WaterTiles"));
+        GetMapDimensions(TileObjects.FindChild("RampTiles"));
+
         Tiles = new TileMap();
 
         // Z = ROW
@@ -28,29 +31,44 @@ public class Level : MonoBehaviour
             }
         }
 
-		// Add Tiles into Array
-		for (int i = 0; i < TileObjects.childCount; i++)
-		{
-			if (TileObjects.GetChild(i).gameObject.GetComponent<Tile>() == null)
-				continue;
+        // Add Tiles into Array
+        BuildTileMap(TileObjects.FindChild("GrassTiles"));
+        BuildTileMap(TileObjects.FindChild("RoadTiles"));
+        BuildTileMap(TileObjects.FindChild("WaterTiles"));
+        BuildTileMap(TileObjects.FindChild("RampTiles"));
 
-			Vector3 pos = TileObjects.GetChild(i).gameObject.transform.position;
+        // Let Tiles know about buildings that are on top of them
+        // Make tiles aware of bases on top
+        SetBuildingsOnTiles(this.gameObject.transform.FindChild("Buildings").FindChild("Bases"));
+        // Make tiles aware of cities on top
+        SetBuildingsOnTiles(this.gameObject.transform.FindChild("Buildings").FindChild("Cities"));
+    }
+
+    private void BuildTileMap(Transform TileObjects)
+    {
+        for (int i = 0; i < TileObjects.childCount; i++)
+        {
+            if (TileObjects.GetChild(i).gameObject.GetComponent<Tile>() == null)
+                continue;
+
+            Vector3 pos = TileObjects.GetChild(i).gameObject.transform.position;
+
             // What is this doing with bridge?
-            if (Tiles[Mathf.RoundToInt(pos.z)][Mathf.RoundToInt(pos.x)] != null && TileObjects.GetChild(i).gameObject.GetComponent<Tile>().Type != 5)
+            if (Tiles[Mathf.RoundToInt(pos.z)][Mathf.RoundToInt(pos.x)] != null && TileObjects.GetChild(i).gameObject.GetComponent<Tile>().Type != 1)
                 continue;
 
             Tiles[Mathf.RoundToInt(pos.z)].SetTile(Mathf.RoundToInt(pos.x), TileObjects.GetChild(i).gameObject.GetComponent<Tile>());
-
         }
+    }
 
-		// Let Tiles know about buildings that are on top of them
-		Transform Buildings = this.gameObject.transform.FindChild("Buildings");
-		for (int i = 0; i < Buildings.childCount; i++)
-		{
-			Building building = Buildings.GetChild(i).GetComponent<Building>();
-			GetTile(building.TilePosition()).BuildingOnTop = building;
-		}
-	}
+    private void SetBuildingsOnTiles(Transform Buildings)
+    {
+        for (int i = 0; i < Buildings.childCount; i++)
+        {
+            Building building = Buildings.GetChild(i).GetComponent<Building>();
+            GetTile(building.TilePosition()).BuildingOnTop = building;
+        }
+    }
 
     /// <summary>
     /// Dynamically works out the maximum width and height of the map

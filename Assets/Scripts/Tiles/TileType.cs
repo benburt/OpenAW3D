@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Tiles
 {
-    public abstract class TileType : UnityEngine.Object
+    public abstract class TileType : UnityEngine.ScriptableObject
     {
         /// <summary>
         /// Defines whether units can walk on this tile
