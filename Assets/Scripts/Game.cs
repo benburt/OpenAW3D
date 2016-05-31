@@ -35,9 +35,6 @@ public class Game : MonoBehaviour
 		Level = GameObject.Find("Level").GetComponent<Level>();
 		HUD = GameObject.Find("GUI").GetComponent<HeadsUpDisplay>();
         Camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-
-        Material mat = Resources.Load<Material>("water");
-        Material mat2 = Resources.Load<Material>("grass");
         
         Units = GameObject.Find("Units").transform;
 		Buildings = GameObject.Find("Buildings").transform;

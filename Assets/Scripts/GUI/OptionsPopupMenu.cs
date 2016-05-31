@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OptionsPopupMenu : Menu
 {
@@ -13,9 +14,7 @@ public class OptionsPopupMenu : Menu
 	{
 		switch (item)
 		{
-		case "Exit Map":
-			Application.LoadLevel("MainMenu");
-			break;
+		case "Exit Map":SceneManager.LoadScene("MainMenu");break;
 		}
 		
 		Hide();

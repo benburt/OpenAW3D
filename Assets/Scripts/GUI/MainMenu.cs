@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : Menu
 {
@@ -56,7 +57,7 @@ public class MainMenu : Menu
 		switch (item)
 		{
 		case "Play (Hotseat Multiplayer)":
-			Application.LoadLevel("Scene01");
+            SceneManager.LoadScene("Scene01");
 			break;
 		case "Quit":
 			Application.Quit();
