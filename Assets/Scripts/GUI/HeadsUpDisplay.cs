@@ -378,7 +378,7 @@ public class HeadsUpDisplay : MonoBehaviour
 	{
 		TileInfoName = name;
 		TileInfoHitPoints = hitPoints;
-
+        
 
 		TileInfoIcon_Scale = 1;
 		TileInfoIncoOffset = new Vector2();
@@ -422,9 +422,11 @@ public class HeadsUpDisplay : MonoBehaviour
         if (tile.BuildingOnTop != null)
         {
             TileInfoName = tile.BuildingOnTop.BuildingType.Name;
+            TileInfoHitPoints = tile.BuildingOnTop.HitPoints;
         }
         else
         {
+            TileInfoName = tile.TType.TileTypeName;
         }
     }
 }

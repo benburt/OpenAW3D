@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(Tile))]
-public class EditorGUILayoutPopupV2 : Editor
+public class TileTypeEditor : Editor
 {
     public static string[] options;
     public static Dictionary<string, Assets.Scripts.Tiles.TileType> TileTypeList = new Dictionary<string, Assets.Scripts.Tiles.TileType>();
