@@ -93,10 +93,7 @@ public class HeadsUpDisplay : MonoBehaviour
 	public Texture2D Icon_Help_RightMouse;
 
 	public Texture2D Icon_Building;
-
-	public Texture2D Icon_Plain;
-	public Texture2D Icon_Sea;
-	public Texture2D Icon_Road;
+    
 	public Texture2D Icon_Bridge;
 	public Texture2D Icon_City_White;
 	public Texture2D Icon_Base_White;
@@ -203,34 +200,9 @@ public class HeadsUpDisplay : MonoBehaviour
 
         // Help
         DrawHelp();
-		
-		// Tile Info
-		//// Box
-		TileInfoBox_Rect.x = Screen.width - TileInfoBox_Rect.width;
-		TileInfoBox_Rect.y = Screen.height - TileInfoBox_Rect.height - 30;
-		GUI.Box(TileInfoBox_Rect, GUIContent.none, TileInfoBox_Style);
-		//// Icon
-		GUI.color = new Color(1, 1, 1, 0.85f);
-		GUI.DrawTexture(new Rect(TileInfoBox_Rect.x + ((TileInfoBox_Rect.width - (TileInfoIcon_Texture.width * TileInfoIcon_Scale)) / 2) + TileInfoIncoOffset.x,
-		                         TileInfoBox_Rect.y + 35 + TileInfoIncoOffset.y,
-		                         TileInfoIcon_Texture.width * TileInfoIcon_Scale,
-		                         TileInfoIcon_Texture.height * TileInfoIcon_Scale), TileInfoIcon_Texture);
-		GUI.color = new Color(1, 1, 1);
-		//// Name
-		TileInfoName_Rect.x = TileInfoBox_Rect.x;
-		TileInfoName_Rect.y = TileInfoBox_Rect.y;
-		GUIUtils.DrawTextWithOutline(TileInfoName_Rect, TileInfoName, TileInfoName_Style, Color.black);
-		//// Building Hit Points
-		if (TileInfoHitPoints != -1)
-		{
-			GUI.DrawTexture(new Rect(TileInfoBox_Rect.x + 20,
-			                         TileInfoBox_Rect.y + TileInfoBox_Rect.height - (Icon_Building.height * 2) - 10,
-			                         Icon_Building.width * 2,
-			                         Icon_Building.height * 2), Icon_Building);
-			GUIUtils.DrawTextWithOutline(new Rect(TileInfoBox_Rect.x + 45,
-			                                      TileInfoBox_Rect.y + TileInfoBox_Rect.height - (Icon_Building.height * 2) - 10,
-			                                      0, 0), TileInfoHitPoints.ToString(), TileInfoHitPoints_Style, Color.black);
-		}
+
+        // Tile Info
+        DrawTileInfo();
 
 		// Crosshair
 		if (Crosshair_Visible)
@@ -251,43 +223,83 @@ public class HeadsUpDisplay : MonoBehaviour
 		// Day No
 		if (Day_Visible)
 		{
-			Day_Style.normal.textColor = Day_Color - new Color(0, 0, 0, Day_AlphaOffset);
-			Day_OutlineColor = new Color(0, 0, 0, 0.75f - Day_AlphaOffset);
-			GUIUtils.DrawTextWithOutline(new Rect(Screen.width/2, Screen.height/2, 0, 0), "Day " + Day_No, Day_Style, Day_OutlineColor);
-
-			if (Day_ShowTime >= 0.75f)
-			{
-				if (Day_AlphaOffset + (1 * Time.deltaTime) >= 1)
-				{
-					Day_AlphaOffset = 1;
-					Day_Visible = false;
-				}
-				else
-					Day_AlphaOffset += 1f * Time.deltaTime;
-			}
-			else
-				Day_ShowTime += Time.deltaTime;
-		}
+            DrawDayNumber();
+        }
 
 		// Tutorial
 		if (Tutorial_Visible)
 		{
-			GUIUtils.DrawTextWithOutline(new Rect(Screen.width/2, Screen.height/2, 0, 0), Tutorial_Message, Tutorial_Style, Color.black);
-			if (GUI.Button(new Rect(0, 0, Screen.width, Screen.height), GUIContent.none, GUIStyle.none))
-			{
-				HideTutorial();
-				ShowDayNo(1);
-			}
-		}
+            DrawTutorial();
+        }
 	}
 
-    public void DrawResourceInfo()
+    private void DrawTileInfo()
+    {
+        //// Box
+        TileInfoBox_Rect.x = Screen.width - TileInfoBox_Rect.width;
+        TileInfoBox_Rect.y = Screen.height - TileInfoBox_Rect.height - 30;
+        GUI.Box(TileInfoBox_Rect, GUIContent.none, TileInfoBox_Style);
+        //// Icon
+        GUI.color = new Color(1, 1, 1, 0.85f);
+        GUI.DrawTexture(new Rect(TileInfoBox_Rect.x + ((TileInfoBox_Rect.width - (TileInfoIcon_Texture.width * TileInfoIcon_Scale)) / 2) + TileInfoIncoOffset.x,
+                                 TileInfoBox_Rect.y + 35 + TileInfoIncoOffset.y,
+                                 TileInfoIcon_Texture.width * TileInfoIcon_Scale,
+                                 TileInfoIcon_Texture.height * TileInfoIcon_Scale), TileInfoIcon_Texture);
+        GUI.color = new Color(1, 1, 1);
+        //// Name
+        TileInfoName_Rect.x = TileInfoBox_Rect.x;
+        TileInfoName_Rect.y = TileInfoBox_Rect.y;
+        GUIUtils.DrawTextWithOutline(TileInfoName_Rect, TileInfoName, TileInfoName_Style, Color.black);
+        //// Building Hit Points
+        if (TileInfoHitPoints != -1)
+        {
+            GUI.DrawTexture(new Rect(TileInfoBox_Rect.x + 20,
+                                     TileInfoBox_Rect.y + TileInfoBox_Rect.height - (Icon_Building.height * 2) - 10,
+                                     Icon_Building.width * 2,
+                                     Icon_Building.height * 2), Icon_Building);
+            GUIUtils.DrawTextWithOutline(new Rect(TileInfoBox_Rect.x + 45,
+                                                  TileInfoBox_Rect.y + TileInfoBox_Rect.height - (Icon_Building.height * 2) - 10,
+                                                  0, 0), TileInfoHitPoints.ToString(), TileInfoHitPoints_Style, Color.black);
+        }
+    }
+
+    private void DrawDayNumber()
+    {
+        Day_Style.normal.textColor = Day_Color - new Color(0, 0, 0, Day_AlphaOffset);
+        Day_OutlineColor = new Color(0, 0, 0, 0.75f - Day_AlphaOffset);
+        GUIUtils.DrawTextWithOutline(new Rect(Screen.width / 2, Screen.height / 2, 0, 0), "Day " + Day_No, Day_Style, Day_OutlineColor);
+
+        if (Day_ShowTime >= 0.75f)
+        {
+            if (Day_AlphaOffset + (1 * Time.deltaTime) >= 1)
+            {
+                Day_AlphaOffset = 1;
+                Day_Visible = false;
+            }
+            else
+                Day_AlphaOffset += 1f * Time.deltaTime;
+        }
+        else
+            Day_ShowTime += Time.deltaTime;
+    }
+
+    private void DrawTutorial()
+    {
+        GUIUtils.DrawTextWithOutline(new Rect(Screen.width / 2, Screen.height / 2, 0, 0), Tutorial_Message, Tutorial_Style, Color.black);
+        if (GUI.Button(new Rect(0, 0, Screen.width, Screen.height), GUIContent.none, GUIStyle.none))
+        {
+            HideTutorial();
+            ShowDayNo(1);
+        }
+    }
+
+    private void DrawResourceInfo()
     {
         GUIUtils.DrawTextWithOutline(ResourcesTag_Position, "G.", ResourcesTag_Style, Color.white, 2);
         GUIUtils.DrawTextWithOutline(Resources_Position, Resources.ToString(), Resources_Style, Color.white, 2);
     }
 
-    public void DrawHelp()
+    private void DrawHelp()
     {
         GUI.DrawTexture(new Rect((Screen.width / 2) - 12, 4, Help_CurrentTexture.width * 2, Help_CurrentTexture.height * 2), Help_CurrentTexture);
         GUIUtils.DrawTextWithOutline(new Rect(Screen.width / 2, 16, 0, 0), Help_CurrentMsg, Help_Style, Color.black);
@@ -384,9 +396,6 @@ public class HeadsUpDisplay : MonoBehaviour
 		TileInfoIncoOffset = new Vector2();
 		switch (name)
 		{
-		case "Plain": TileInfoIcon_Texture = Icon_Plain; break;
-		case "Road": TileInfoIcon_Texture = Icon_Road; break;
-		case "Sea": TileInfoIcon_Texture = Icon_Sea; break;
 		case "Bridge":
 			TileInfoIcon_Texture = Icon_Bridge;
 			TileInfoIcon_Scale = 2;
@@ -427,6 +436,12 @@ public class HeadsUpDisplay : MonoBehaviour
         else
         {
             TileInfoName = tile.TType.TileTypeName;
+            TileInfoHitPoints = -1;
         }
+
+        // Info regardless of building or not
+        TileInfoIcon_Texture = tile.TType.TileInfoIcon_Texture;
+        TileInfoIcon_Scale = tile.TType.TileInfoIcon_Scale;
+
     }
 }

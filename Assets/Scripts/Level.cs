@@ -13,10 +13,10 @@ public class Level : MonoBehaviour
 		// Setup Tile Selection
 		Transform TileObjects = this.gameObject.transform.FindChild("Tiles");
 
-        GetMapDimensions(TileObjects.FindChild("GrassTiles"));
-        GetMapDimensions(TileObjects.FindChild("RoadTiles"));
-        GetMapDimensions(TileObjects.FindChild("WaterTiles"));
-        GetMapDimensions(TileObjects.FindChild("RampTiles"));
+        for(int i = 0; i < TileObjects.childCount; i++)
+        {
+            GetMapDimensions(TileObjects.GetChild(0));
+        }
 
         Tiles = new TileMap();
 

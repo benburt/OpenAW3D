@@ -70,8 +70,12 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            Game.HUD.SetTileInfo(TType.TileTypeName);
-            Game.HUD.SetTileInfo(this);
+            if(TType.TileTypeName != "Plain" && TType.TileTypeName != "Road" && TType.TileTypeName != "Sea")
+            {
+                Game.HUD.SetTileInfo(TType.TileTypeName);
+            }
+            else
+                Game.HUD.SetTileInfo(this);
         }
 
 		TintAsSelected();
