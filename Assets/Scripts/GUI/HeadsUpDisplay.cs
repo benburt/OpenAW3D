@@ -247,9 +247,7 @@ public class HeadsUpDisplay : MonoBehaviour
                                  TileInfoIcon_Texture.height * TileInfoIcon_Scale), TileInfoIcon_Texture);
         GUI.color = new Color(1, 1, 1);
         //// Name
-        TileInfoName_Rect.x = TileInfoBox_Rect.x;
-        TileInfoName_Rect.y = TileInfoBox_Rect.y;
-        GUIUtils.DrawTextWithOutline(TileInfoName_Rect, TileInfoName, TileInfoName_Style, Color.black);
+        DrawTileInfoTileName();
         //// Building Hit Points
         if (TileInfoHitPoints != -1)
         {
@@ -261,6 +259,13 @@ public class HeadsUpDisplay : MonoBehaviour
                                                   TileInfoBox_Rect.y + TileInfoBox_Rect.height - (Icon_Building.height * 2) - 10,
                                                   0, 0), TileInfoHitPoints.ToString(), TileInfoHitPoints_Style, Color.black);
         }
+    }
+
+    public void DrawTileInfoTileName()
+    {
+        TileInfoName_Rect.x = TileInfoBox_Rect.x;
+        TileInfoName_Rect.y = TileInfoBox_Rect.y;
+        GUIUtils.DrawTextWithOutline(TileInfoName_Rect, TileInfoName, TileInfoName_Style, Color.black);
     }
 
     private void DrawDayNumber()
@@ -427,6 +432,7 @@ public class HeadsUpDisplay : MonoBehaviour
 
     public void SetTileInfo(Tile tile)
     {
+        TileInfoIncoOffset = new Vector2();
         // Refactor above function
         if (tile.BuildingOnTop != null)
         {
