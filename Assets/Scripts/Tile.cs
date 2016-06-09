@@ -70,7 +70,7 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            if(TType.TileTypeName != "Plain" && TType.TileTypeName != "Road" && TType.TileTypeName != "Sea")
+            if(TType.TileTypeName != "Plain" && TType.TileTypeName != "Road" && TType.TileTypeName != "Sea" && TType.TileTypeName != "Bridge")
             {
                 Game.HUD.SetTileInfo(TType.TileTypeName);
             }

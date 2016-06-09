@@ -401,10 +401,6 @@ public class HeadsUpDisplay : MonoBehaviour
 		TileInfoIncoOffset = new Vector2();
 		switch (name)
 		{
-		case "Bridge":
-			TileInfoIcon_Texture = Icon_Bridge;
-			TileInfoIcon_Scale = 2;
-			break;
 		case "City":
 			if (team == 1)
 				TileInfoIcon_Texture = Icon_City_Red;
