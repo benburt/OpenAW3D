@@ -94,7 +94,6 @@ public class HeadsUpDisplay : MonoBehaviour
 
 	public Texture2D Icon_Building;
     
-	public Texture2D Icon_Bridge;
 	public Texture2D Icon_City_White;
 	public Texture2D Icon_Base_White;
 	public Texture2D Icon_City_Red;
