@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 
-public class Unit : MonoBehaviour
+public class Unit : NetworkBehaviour
 {
 	protected Game Game;
 	private bool Selected = false;
@@ -13,7 +14,7 @@ public class Unit : MonoBehaviour
 
 	private float Range = 4;
 	private float AttackRange = 1;
-	private float HitPoints = 10;
+    private float HitPoints = 10;
 
 	public int Team = 0;
 

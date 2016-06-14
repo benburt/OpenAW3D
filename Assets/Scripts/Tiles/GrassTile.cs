@@ -14,6 +14,9 @@ namespace Assets.Scripts.Tiles
         public void OnEnable()
         {
             TileInfoIcon_Texture = Resources.Load<Texture2D>("Textures/grass");
+
+            if (TileInfoIcon_Texture == null)
+                Debug.Log("ARGH! NULL REF");
         }
     }
 }
